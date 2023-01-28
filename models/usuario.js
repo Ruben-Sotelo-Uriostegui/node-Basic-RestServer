@@ -11,11 +11,6 @@ const UsarioSchema=Schema({
     required:[true,'El correo es obligatorio'],
     unique:true
   },
-  correo:{
-    type:String,
-    required:[true,'El correo es requerido'],
-    unique:true
-  },
   password:{
     type:String,
     required:[true,'La contraseña es obligatoria'],
@@ -26,7 +21,7 @@ const UsarioSchema=Schema({
   rol:{
     type:String,
     required:true,
-    enum:['ADMIN_ROLE','USER_ROLE']
+    enum:['ADMIN_ROLE','USER_ROLE'],
   },
   estado:{
     type:Boolean,
@@ -40,8 +35,8 @@ const UsarioSchema=Schema({
 })
 
 UsarioSchema.methods.toJSON=function(){
-    const {password,__v,... usuario}= this.toObject();
-
+    const {password,__v,_id,... usuario}= this.toObject();
+    usuario.uid=_id;
     return usuario;
 
 }

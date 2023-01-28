@@ -75,8 +75,10 @@ const usuariosGet=async(req, res=response)=> {
     //borrar físicamente no recomendado
     //const usuario = await Usuario.findByIdAndDelete(id);
 
-    const usuario = await Usuario.findByIdAndUpdate(id,{estado:false});
 
+    const usuario = await Usuario.findByIdAndUpdate(id,{estado:false});
+  //informacion del usuario autenticado
+    //const usuarioAutenticado= req.usuario;
 
     res.status(201).json({
         usuario

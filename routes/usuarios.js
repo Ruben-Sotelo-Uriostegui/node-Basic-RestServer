@@ -1,10 +1,16 @@
 //con destructuracion se obtiene Router de Express
 const {Router}=require('express');
 const {check}=require('express-validator');
-const {validarCampos}= require('../middlewares/validar-campos');
+
 //importamos de controllers/usuarios todos los metodos para nuestros endPoints
 const { usuariosGet, usuariosPut, usuariosPost, usuariosDelete, usuariosPatch } = require('../controllers/usuarios');
 const { esRolValido,emailExiste, idExiste } = require('../helpers/db-validators');
+//importaciones de middlewares de manera mas optima
+const {validarJWT,esAdminRole,tieneRole,validarCampos}  = require('../middlewares')
+
+/* const { validarJWT } = require('../middlewares/validar-jwt');
+const { esAdminRole,tieneRole } = require('../middlewares/validar-roles');
+const {validarCampos}= require('../middlewares/validar-campos'); */
 
 const router = Router();
 
@@ -29,8 +35,12 @@ router.get('/', usuariosGet);
   ] ,usuariosPost);
 
   router.delete('/:id',[
+    validarJWT,
+    //esAdminRole,
+    tieneRole('ADMIN_ROLE','USER_ROLE'),
     check('id','No es un id Valido').isMongoId(),
     check('id').custom( idExiste ),
+    
     validarCampos,
   ], usuariosDelete);
 
